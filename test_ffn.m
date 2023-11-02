@@ -7,11 +7,13 @@ function test_ffn()
     total_correct_ictal = 0;
     total_ictal = 0;
     total = 0;
-    guesses = ffn_net(FeatVectSelT, 'useGPU', 'yes');
-    for ind = tr.testInd
-        correct = find(T(:,ind)==1);
-        guess = guesses(:,ind);
+    guesses = ffn_net(FeatVectSelT(:, tr.testInd), 'useGPU', 'yes');
+    guesses_max = zeros(1, length(guesses));
+    for i = 1:length(tr.testInd)
+        correct = find(T(:,tr.testInd(i))==1);
+        guess = guesses(:,i);
         guess_max = find(guess == max(guess));
+        guesses_max(i) = guess_max;
         if correct ~= 1
             total_ictal = total_ictal + 1;
         end
@@ -27,4 +29,9 @@ function test_ffn()
     end
     disp(total_correct/length(tr.testInd));
     disp(total_correct_ictal/total_ictal);
+    disp(sum(guesses_max == 2));
+    disp(sum(guesses_max == 3));
+    disp(total_ictal);
+
+    save guesses_max.mat guesses_max
 end

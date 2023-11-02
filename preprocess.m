@@ -2,18 +2,18 @@ function [T, newTrg] = preprocess(patient)
     load(patient);
 
     % some constants
-    PREICTAL_SIZE = 600;
+    PREICTAL_SIZE = 300;
     POSTICTAL_SIZE = 60;
 
     INTERICTAL_LABEL = 1;
     PREICTAL_LABEL = 2;
     ICTAL_LABEL = 3;
-    POSTICTAL_LABEL = PREICTAL_LABEL;
+    POSTICTAL_LABEL = ICTAL_LABEL;
 
     INTERICTAL_CLASS = [1 0 0]';
     PREICTAL_CLASS = [0 1 0]';
     ICTAL_CLASS = [0 0 1]';
-    POSTICTAL_CLASS = PREICTAL_CLASS;
+    POSTICTAL_CLASS = ICTAL_CLASS;
 
 
     % transpose feature vector
@@ -21,8 +21,8 @@ function [T, newTrg] = preprocess(patient)
 
 
     % create target vector
-    map__newTrg_values = dictionary([0 1], [1 3]);
-    newTrg = map__newTrg_values(Trg);
+    map_newTrg_values = dictionary([0 1], [1 3]);
+    newTrg = map_newTrg_values(Trg);
 
     
     % label preictal and postictal states
@@ -59,7 +59,7 @@ function [T, newTrg] = preprocess(patient)
 
     % create T
     map_T_values = [INTERICTAL_CLASS, PREICTAL_CLASS, ICTAL_CLASS];
-    disp(min(newTrg) + " " + max(newTrg));
+    %disp(min(newTrg) + " " + max(newTrg));
     T = zeros(3, length(newTrg));
     for i=1:length(newTrg)
         T(:,i) = map_T_values(:, newTrg(i));
