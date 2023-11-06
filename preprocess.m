@@ -59,14 +59,19 @@ function [T, newTrg] = preprocess(patient)
 
     % create T
     map_T_values = [INTERICTAL_CLASS, PREICTAL_CLASS, ICTAL_CLASS];
+    map_T_values_categorical = ["Interictal", "Preictal", "Ictal"];
     %disp(min(newTrg) + " " + max(newTrg));
     T = zeros(3, length(newTrg));
+    T_categorical = strings(1, length(newTrg));
     for i=1:length(newTrg)
         T(:,i) = map_T_values(:, newTrg(i));
+        T_categorical(i) = map_T_values_categorical(newTrg(i));
     end
-
+    T_categorical = categorical(T_categorical);
+    
     % save new features and target matrix
     save FeatVectSelT.mat FeatVectSelT
     save newTrg.mat newTrg
     save T.mat T
+    save T_categorical.mat T_categorical
 end
