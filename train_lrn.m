@@ -3,7 +3,7 @@ function train_lrn()
     T = importdata("T.mat");
     X = num2cell(X,1); 
     T = num2cell(T,1);
-    lrn_net = layrecnet(1, 10, "trainscg");
+    lrn_net = layrecnet(1:2, 10, "trainscg");
     [Xs,Xi,Ai,Ts] = preparets(lrn_net,X,T);
     input_number = length(X);
     [trainInd,valInd,testInd] = divideblock(input_number, 0.70, 0.15, 0.15);

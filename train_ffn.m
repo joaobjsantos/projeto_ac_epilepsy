@@ -1,7 +1,7 @@
 function train_ffn()
     load("FeatVectSelT.mat");
     load("T.mat");
-    ffn_net = feedforwardnet([100], 'trainscg');
+    ffn_net = feedforwardnet([200 100], 'trainscg');
     input_number = length(FeatVectSelT);
     [trainInd,valInd,testInd] = divideblock(input_number, 0.70, 0.15, 0.15);
     ffn_net.divideFcn = 'divideind';

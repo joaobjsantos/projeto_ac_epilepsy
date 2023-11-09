@@ -1,4 +1,4 @@
-function train_lstm()
+function train_lstm_weighted()
     X = importdata("FeatVectSelT.mat");
     T = importdata("T_categorical.mat");
     X = num2cell(X,1); 
@@ -14,12 +14,24 @@ function train_lstm()
     numClasses = 3;
     numFeatures = 29;
     minibatchsize = 2048; 
+    classes = unique(T', "rows")';
+
+    trainInterictal = sum(TTrain == "Interictal");
+    trainPreictal = sum(TTrain == "Preictal");
+    trainIctal = sum(TTrain == "Ictal");
+    trainTotal = trainInterictal + trainPreictal + trainIctal;
+
+    classWeights = [trainInterictal/trainTotal
+                    trainPreictal/trainTotal
+                    trainIctal/trainTotal];
+
     layers = [ ...
      sequenceInputLayer(numFeatures)
-     bilstmLayer(numHiddenUnits,OutputMode="last")
+     lstmLayer(numHiddenUnits,OutputMode="last")
      fullyConnectedLayer(numClasses)
      softmaxLayer
-     classificationLayer];
+     classificationLayer(Classes=classes, classWeights=classWeights)];
+
     options = trainingOptions("adam", ...
      InitialLearnRate=0.002,...
      ExecutionEnvironment="gpu",...
@@ -30,10 +42,10 @@ function train_lstm()
      GradientThreshold=1, ...
      Verbose=false, ...
      Plots="training-progress");
-    lstm_net = trainNetwork(XTrain,TTrain,layers,options);
-    YTest = classify(lstm_net,XTest,MiniBatchSize=minibatchsize, ExecutionEnvironment="gpu");
+    lstm_weighted_net = trainNetwork(XTrain,TTrain,layers,options);
+    YTest = classify(lstm_weighted_net,XTest,MiniBatchSize=minibatchsize, ExecutionEnvironment="gpu");
     acc = mean(mean(YTest == TTest))
-    save lstm_net.mat lstm_net
+    save lstm_weighted_net.mat lstm_weighted_net
     save XTest.mat XTest
     save TTest.mat TTest
 end
