@@ -5,7 +5,7 @@ function train_ftdnn()
     X = num2cell(X,1);
     T = num2cell(T,1);
 
-    ftdnn_net = timedelaynet(1:2, 29);
+    ftdnn_net = timedelaynet(1:2, 10);
     input_number = length(X);
     [trainInd, valInd, testInd] = divideblock(input_number, 0.70, 0.15, 0.15);
 
