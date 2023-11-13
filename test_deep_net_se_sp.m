@@ -1,5 +1,7 @@
-function test_deep_net_se_sp(netname, XTest, TTest)
+function test_deep_net_se_sp(netname)
     net = importdata(netname + ".mat");
+    XTest = importdata("XTest.mat");
+    TTest = importdata("TTest.mat");
     true_positives = 0;
     true_negatives = 0;
     false_positives = 0;
@@ -21,6 +23,7 @@ function test_deep_net_se_sp(netname, XTest, TTest)
             end
         end
     end
+    disp(true_positives + false_negatives);
     disp("Sensitivity = " + true_positives/(true_positives + false_negatives));
     disp("Specificity = " + true_negatives/(true_negatives + false_positives));
 end
