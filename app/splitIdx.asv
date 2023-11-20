@@ -1,0 +1,12 @@
+function [trainIdx, valIdx, testIdx] = splitIdx(n, per1, per2, per3)
+    trainIdx = 1:floor(trainPer*n);
+    cumPer2 = per1+per2;
+    if per3 == 0
+        valIdx = floor(per1*n)+1:n;
+        testIdx = [];
+    else
+        valIdx = floor(per1*n)+1:floor(cumPer2*n);
+        testIdx = floor(cumPer2*n)+1:n;
+    end
+    disp("#trainIdx = " + )
+end
